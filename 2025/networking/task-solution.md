@@ -12,12 +12,12 @@ In networking, protocols are a set of rules and conventions that determine how d
 ## HTTP (Hyper Text Transfer Protocol) -port number 80
 HTTP is the protocol used for transferring web pages and data over the internet. It defines how web browsers and web servers communicate.
 
-Common use: Web browsing.
+<ins>*Common use:*</ins> Web browsing.
 
 ## HTTPS (Hyper Text Transfer Protocol Secure)- port number 443
 HTTPS is a secure version of HTTP. It encrypts the communication between the web browser and the server.
 
-Common use: Secure browsing (e.g., online banking, shopping).
+_Common use:_ Secure browsing (e.g., online banking, shopping).
 
 ## FTP (File Transfer Protocol) - port number 20, 21
 FTP is used for transferring files between computers on a network. FTP connects to a server, and users can upload or download files between their local machine and the server.

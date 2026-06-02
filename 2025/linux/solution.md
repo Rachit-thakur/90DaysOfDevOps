@@ -12,7 +12,7 @@ Contains user account information.
 Example entry:
 alice:x:1001:1001:Alice:/home/alice:/bin/bash
 
-## Field	Description
+| Field |   | Description |
    alice	        Username
    x	            Password placeholder
    1001	          UID

@@ -52,7 +52,7 @@ command to view user info:
 
 A line may look like:
 
-`alice:x:1001:1001:Alice:/home/alice:/bin/bash`
+`rachit:x:1001:1001:rachit:/home/alice:/bin/bash`
 
 
 The fields are separated by :.
@@ -61,11 +61,11 @@ The fields are separated by :.
 
 | Field | Meaning |
 | :--- | :--- |
-| `alice` | Username |
+| `rachit` | Username |
 | `x` | Password placeholder |
 | `1001` | UID (User ID) |
 | `1001` | GID (Group ID) |
-| `Alice` | User description |
+| `rachit` | User description |
 | `/home/alice` | Home directory |
 | `/bin/bash` | Default shell |
 
@@ -230,4 +230,41 @@ Change both owner and group:
 Check the result:
 
 ```ls -l filename.txt```
+
+---
+
+# **Task1️⃣ User & Group Management**
+
+Create a user `devops_user` and add them to a group `devops_team`.
+
+- create a user:
+```sudo useradd devops_user```
+
+- create a group:
+```sudo groupadd devops_team```
+
+- add user to the group:
+```sudo usermod -aG devops_team devops_user```
+
+Set a password and grant **sudo** access.
+
+- set a password for the user:
+```sudo passwd devops_user```
+
+- grant sudo access to the devops user:
+```sudo usermod -aG sudo devops_user```
+
+- verify the sudo access:
+```getent group sudo | cut -d: -f4```
+
+Restrict SSH login for certain users in `/etc/ssh/sshd_config`.
+
+- restrict SSH login for certain user:
+```sudo vim /etc/ssh/sshd_config```
+
+- write in file:
+`DenyUsers devops_user`
+
+---
+
 

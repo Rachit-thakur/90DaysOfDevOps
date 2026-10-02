@@ -238,24 +238,28 @@ Check the result:
 Create a user `devops_user` and add them to a group `devops_team`.
 
 - create a user:
-```sudo useradd devops_user```
+```sudo useradd devops_user```\
+![linix](images/Screenshot2.png)
 
 - create a group:
 ```sudo groupadd devops_team```
 
 - add user to the group:
-```sudo usermod -aG devops_team devops_user```
+```sudo usermod -aG devops_team devops_user```\
+![linix](images/Screenshot1.png)
 
 Set a password and grant **sudo** access.
 
 - set a password for the user:
-```sudo passwd devops_user```
+```sudo passwd devops_user```\
+![linix](images/Screenshot3.png)
 
 - grant sudo access to the devops user:
 ```sudo usermod -aG sudo devops_user```
 
 - verify the sudo access:
-```getent group sudo | cut -d: -f4```
+```getent group sudo | cut -d: -f4```\
+![linix](images/Screenshot4.png)
 
 Restrict SSH login for certain users in `/etc/ssh/sshd_config`.
 

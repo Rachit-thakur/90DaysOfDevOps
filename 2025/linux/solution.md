@@ -252,7 +252,6 @@ Set a password and grant **sudo** access.
 
 - set a password for the user:
 ```sudo passwd devops_user```\
-<br>
 ![linux](images/Screenshot3.png)
 
 - grant sudo access to the devops user:
@@ -260,7 +259,6 @@ Set a password and grant **sudo** access.
 
 - verify the sudo access:
 ```getent group sudo | cut -d: -f4```\
-<br>
 ![linux](images/Screenshot4.png)
 
 Restrict SSH login for certain users in `/etc/ssh/sshd_config`.

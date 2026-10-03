@@ -272,3 +272,18 @@ Restrict SSH login for certain users in `/etc/ssh/sshd_config`.
 ---
 
 
+# **2️⃣ File & Directory Permissions**
+
+Create `/devops_workspace` and a file `project_notes.txt`.
+
+- create a workspace with:```mkdir devops_workspace```, and file with:```touch projectnotes.txt```
+![linux](images/Screenshot5.png)
+
+Set permissions:
+**Owner can edit**, **group can read**, **others have no access**.
+```chmod 240 devops-workspace projectnotes.txt```\
+Use ```ls -l``` to verify permissions:\
+![linux](images/Screenshot6.png)\
+![linux](images/Screenshot7.png)
+
+---

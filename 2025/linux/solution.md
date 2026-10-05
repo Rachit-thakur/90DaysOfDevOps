@@ -287,3 +287,25 @@ Use ```ls -l``` to verify permissions:\
 ![linux](images/Screenshot7.png)
 
 ---
+
+# **5️⃣ Process Management & Monitoring**
+
+Start a background process (`ping google.com > ping_test.log &`).
+![linux](images/Screenshot8.png)
+
+Use `ps`, `top`, and `htop` to monitor it.
+- ps:
+ps aux | grep ping\
+![linux](images/Screenshot9.png)
+
+- top:\
+![linux](images/Screenshot10.png)
+
+- htop\
+![linux](images/Screenshot11.png)
+
+Kill the process and verify it's gone.
+```kill PID```
+
+verify:
+```ps aux | grep ping```

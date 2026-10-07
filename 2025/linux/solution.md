@@ -288,6 +288,35 @@ Use ```ls -l``` to verify permissions:\
 
 ---
 
+# **3️⃣ Log File Analysis with AWK, Grep & Sed**
+Logs are crucial in DevOps! You’ll analyze logs using the **Linux_2k.log** file from **LogHub** ([GitHub Repo](https://github.com/logpai/loghub/blob/master/Linux/Linux_2k.log)).
+
+**Download the log file** from the repository.
+![linux](images/Screenshot13.png)
+
+**Extract insights using commands:**
+Use `grep` to find all occurrences of the word **"error"**.
+```grep -i "authentication failure" Linux_2k.log```
+![linux](images/Screenshot14.png)
+I run **"authentication failure"** commmand in **"grep"** because **"error"** is not present in log file.
+
+Use `awk` to extract **timestamps and log levels**.\
+```awk '/authentication failure/ {print $1, $2, $3, $6, $7, $12, $13}' Linux_2k.log```
+![linux](images/Screenshot15.png)
+
+Use `sed` to replace all IP addresses with **[REDACTED]** for security.
+```sed "s/rhost/REDACTED/g" authfailure.txt```
+![linux](images/Screenshot16.png)
+
+**Bonus:** Find the most frequent log entry using `awk` or `sort | uniq -c | sort -nr | head -10`.\
+```sort authfailure.txt | uniq -c | sort -nr | head -10```
+- **sort:** Group identical lines together.
+- **uniq -c:** Collapse adjacent duplicates and prefix each line with its occurrence count.
+- **sort -nr:** Sort the resulting counts numerically in reverse order (highest first).
+- **head -10:** Truncate the list to show only the top 10 results.
+![linux](images/Screenshot17.png)
+
+
 # **5️⃣ Process Management & Monitoring**
 
 Start a background process (`ping google.com > ping_test.log &`).
@@ -305,7 +334,8 @@ ps aux | grep ping\
 ![linux](images/Screenshot11.png)
 
 Kill the process and verify it's gone.
-```kill PID```
+```kill PID```\
+![linux](images/Screenshot12.png)
 
 verify:
 ```ps aux | grep ping```

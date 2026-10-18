@@ -328,3 +328,17 @@ A developer can create a separate branch to fix the problem without interfering 
      ![linux](images/Screenshot26.png)
 
 ---
+
+### Task 4: Explore Your Commit History
+1. **View the Git Log:**  
+   - Check your commit history using:
+     ```bash
+     git log
+     ```
+     ![linux](images/Screenshot27.png)
+
+   - Take note of the commit hash and details as you will reference these in your documentation.
+   ![linux](images/Screenshot28.png) 
+
+---
+

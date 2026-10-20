@@ -211,6 +211,154 @@ Docker plays an important role in modern DevOps by making applications easier to
 
 Containerization is particularly useful for microservices and CI/CD pipelines because it supports independent deployment, efficient resource usage, portability, and automation.
 
+---
+
+# Task 2: Create a Dockerfile for a Sample Java Project
+
+This project demonstrates how to containerize a simple Java application using Docker. The application prints random quotes to the terminal and can be extended to handle web requests.
+
+## 1. Project Overview
+
+The goal of this project is to:
+
+- Create a simple Java application.
+- Write a Dockerfile to containerize the application.
+- Build a Docker image.
+- Run the application inside a Docker container.
+- Verify the container status and application logs.
+
+## 2. Project Structure
+
+Organize your project files as follows:
+
+```text
+java-app/
+├── src/
+│   └── Main.java
+├── Dockerfile
+└── README.md
+```
+
+## 3. Create the Dockerfile
+
+Create a file named `Dockerfile` in the root directory of your project.
+
+```dockerfile
+# Use the official Eclipse Temurin Java 21 JDK image
+FROM eclipse-temurin:21-jdk
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Java source file into the container
+COPY src/Main.java .
+
+# Compile the Java application
+RUN javac Main.java
+
+# Start the Java application
+CMD ["java", "Main"]
+```
+
+### Explanation
+
+- `FROM eclipse-temurin:21-jdk`: Uses Java 21 as the base image.
+- `WORKDIR /app`: Sets `/app` as the working directory inside the container.
+- `COPY src/Main.java .`: Copies the Java source file into the container.
+- `RUN javac Main.java`: Compiles the Java application.
+- `CMD ["java", "Main"]`: Executes the compiled Java application when the container starts.
+
+**Note:** The Dockerfile above is suitable for a terminal-based application that prints quotes. If your application runs a web server, you must configure the application to listen on a port and expose that port as needed.
+
+## 4. Build the Docker Image
+
+Open a terminal in the root directory of your project and execute:
+
+```bash
+docker build -t rachitthakur/java-app:latest .
+```
+
+- `docker build`: Builds a Docker image.
+- `-t rachitthakur/java-app:latest`: Assigns a name and tag to the image.
+- `.`: Specifies the current directory as the build context.
+
+### Docker Build Screenshot
+
+![Docker Build Process](images/Screenshot29.png)
+
+## 5. Run the Docker Container
+
+Run the application in detached mode using the following command:
+
+```bash
+docker run -d rachitthakur/java-app:latest
+```
+
+**Note:** Since this sample application prints quotes to the terminal, you do not need to map any ports. Port mapping is required only if the application runs a network service, such as a web server.
+
+### Running Container Screenshot
+
+![Running Docker Container](images/Screenshot30.png)
+
+The app is also running on the localhost.
+
+![Localhost Verification](images/Screenshot31.png)
+## 6. Verify the Application
+
+### Check Container Status
+
+Execute the following command to list running containers:
+
+```bash
+docker ps
+```
+
+To view all containers, including stopped ones, use:
+
+```bash
+docker ps -a
+```
+
+### Container Status Screenshot
+
+![Docker PS Output](images/Screenshot32.png)
+
+### Check Application Logs
+
+View the application's output using:
+
+```bash
+docker logs <container_id>
+```
+
+The logs should display the quotes printed by the Java application.
+
+### Docker Logs Screenshot
+
+![Docker Logs Output](images/Screenshot33.png)
+
+
+## 7. Stop and Remove the Container
+
+To stop the running container:
+
+```bash
+docker stop java-app
+```
+
+To remove the container:
+
+```bash
+docker rm java-app
+```
+
+To remove the Docker image, run:
+
+```bash
+docker rmi rachitthakur/java-app:latest
+```
+
+---
 
 
 

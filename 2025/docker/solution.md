@@ -360,5 +360,287 @@ docker rmi rachitthakur/java-app:latest
 
 ---
 
+# Task 3: Explore Docker Terminologies and Components
+
+# 🐳 Docker Key Terminologies and Components
+
+A quick guide to important **Docker concepts, components, and how they work together**.
+
+---
+
+## 📌 Docker Key Terminologies
+
+### 1. Docker Image
+
+A **Docker Image** is a read-only package containing everything required to run an application, including code, libraries, dependencies, configuration, and runtime.
+
+```bash
+docker pull nginx
+```
+
+This downloads the Nginx image from Docker Hub.
+
+---
+
+### 2. Docker Container
+
+A **Docker Container** is a running instance of a Docker image. It provides an isolated environment in which an application runs.
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+One image can be used to create multiple containers.
+
+---
+
+### 3. Dockerfile
+
+A **Dockerfile** is a text file containing instructions used to build a Docker image.
+
+Example:
+
+```dockerfile
+FROM nginx
+COPY index.html /usr/share/nginx/html/
+EXPOSE 80
+```
+
+Build the image:
+
+```bash
+docker build -t my-nginx .
+```
+
+---
+
+### 4. Docker Volume
+
+A **Docker Volume** is used to store persistent data generated or used by containers.
+
+```bash
+docker volume create mydata
+```
+
+Attach the volume to a container:
+
+```bash
+docker run -v mydata:/data nginx
+```
+
+### Uses
+
+- Database storage
+- Application data
+- Persistent files
+- Sharing data between containers
+
+---
+
+### 5. Docker Network
+
+A **Docker Network** allows containers to communicate with each other and with external networks.
+
+Create a network:
+
+```bash
+docker network create mynetwork
+```
+
+Run a container on the network:
+
+```bash
+docker run -d --network mynetwork --name app nginx
+```
+
+---
+
+# 🧩 Main Docker Components
+
+## 1. Docker Engine
+
+**Docker Engine** is the core technology responsible for creating and managing Docker containers.
+
+It mainly consists of:
+
+- **Docker Daemon (`dockerd`)** – Manages images, containers, networks, and volumes.
+- **Docker CLI** – Command-line interface used to interact with Docker.
+- **Docker API** – Allows applications and tools to communicate with the Docker daemon.
+
+Example:
+
+```bash
+docker run nginx
+```
+
+The Docker CLI sends the command to the Docker daemon, which creates and runs the container.
+
+---
+
+## 2. Docker Client
+
+The **Docker Client** is the command-line interface through which users interact with Docker.
+
+Common commands:
+
+```bash
+docker build
+docker pull
+docker run
+docker ps
+docker stop
+```
+
+The client communicates with the Docker daemon through the Docker API.
+
+---
+
+## 3. Docker Daemon
+
+The **Docker Daemon (`dockerd`)** is a background service responsible for managing Docker objects such as:
+
+- Images
+- Containers
+- Networks
+- Volumes
+
+For example:
+
+```bash
+docker run nginx
+```
+
+The daemon checks whether the Nginx image is available locally. If it is not available, Docker can download it from a registry such as Docker Hub.
+
+---
+
+## 4. Docker Hub
+
+**Docker Hub** is a cloud-based registry where Docker images can be stored and shared.
+
+Popular images include:
+
+- Nginx
+- Ubuntu
+- MySQL
+- Redis
+- Node.js
+- Python
+
+Example:
+
+```bash
+docker pull nginx
+```
+
+---
+
+## 5. Docker Registry
+
+A **Docker Registry** is a storage system for Docker images.
+
+### Types
+
+- **Public Registry** – Images are publicly available.
+- **Private Registry** – Used by organizations to store internal images.
+
+**Docker Hub** is an example of a Docker registry.
+
+---
+
+## 6. Docker Compose
+
+**Docker Compose** is used to define and run applications consisting of multiple containers.
+
+For example:
+
+```text
+Frontend
+   ↓
+Backend
+   ↓
+Database
+```
+
+These services can be defined in a `compose.yaml` file and started together:
+
+```bash
+docker compose up
+```
+
+---
+
+---
+
+# 🚀 Example Docker Workflow
+
+Suppose a developer wants to run an Nginx application.
+
+### Step 1: Pull the Image
+
+```bash
+docker pull nginx
+```
+
+Docker downloads the Nginx image from Docker Hub if it isn't already available locally.
+
+### Step 2: Run the Container
+
+```bash
+docker run -d -p 8080:80 nginx
+```
+
+Docker creates a container from the Nginx image.
+
+### Step 3: Add Persistent Storage
+
+If the application needs persistent data, attach a Docker Volume.
+
+```bash
+docker run -v mydata:/data nginx
+```
+
+### Step 4: Connect Containers
+
+If multiple containers need to communicate, use a Docker Network.
+
+```bash
+docker network create mynetwork
+```
+
+### Step 5: Manage Containers
+
+Useful commands include:
+
+```bash
+docker ps
+docker stop <container_id>
+docker start <container_id>
+docker restart <container_id>
+docker rm <container_id>
+```
+
+---
+
+# 📊 Docker Terminology Summary
+
+| Term | Description |
+|---|---|
+| 🖼️ **Image** | Read-only template used to create containers |
+| 📦 **Container** | Running instance of an image |
+| 📄 **Dockerfile** | Instructions used to build an image |
+| 💾 **Volume** | Provides persistent storage |
+| 🌐 **Network** | Enables communication between containers |
+| ⚙️ **Docker Engine** | Core platform for running and managing containers |
+| 💻 **Docker Client** | Interface used to send commands to Docker |
+| 🔧 **Docker Daemon** | Background service that manages Docker resources |
+| ☁️ **Docker Hub** | Cloud registry for storing and sharing images |
+| 🗄️ **Registry** | System for storing Docker images |
+| 🔗 **Docker Compose** | Tool for managing multi-container applications |
+| 🔌 **Docker API** | Interface for communication with the Docker daemon |
+
+---
+
+
 
 

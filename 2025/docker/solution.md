@@ -641,6 +641,210 @@ docker rm <container_id>
 
 ---
 
+# Task 4: Optimize Your Docker Image with Multi-Stage Builds
+
+## 1. Implement a Multi-Stage Docker Build
+
+A multi-stage Docker build uses multiple `FROM` statements in a single Dockerfile.
+
+The main idea is:
+
+- **Stage 1:** Build/compile the application using the JDK.
+- **Stage 2:** Run the application using only the JRE.
+- Only the required compiled files are copied from the build stage to the final image.
+
+---
+
+## Original Dockerfile
+
+The original Dockerfile uses the full Java JDK for both compiling and running the application.
+
+```dockerfile
+# Use the official Eclipse Temurin Java 21 JDK image
+FROM eclipse-temurin:21-jdk
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the Java source file into the container
+COPY src/Main.java .
+
+# Compile the Java application
+RUN javac Main.java
+
+# Start the Java application
+CMD ["java", "Main"]
+```
+
+### Problems with the Original Dockerfile
+
+- The full **JDK** remains in the final image.
+- The Java compiler (`javac`) is not required after compilation.
+- The final image can be larger than necessary.
+- Development tools are included in the production container.
+
+---
+
+# Modified Dockerfile: Multi-Stage Build
+
+```dockerfile
+# ==========================================
+# STAGE 1: Build Environment
+# ==========================================
+
+# Use the full JDK because we need the javac compiler
+FROM eclipse-temurin:17-jdk-alpine AS builder
+
+# Set the build workspace
+WORKDIR /build
+
+# Copy the Java source file
+COPY src/Main.java .
+
+# Compile the Java application
+RUN javac Main.java
 
 
+# ==========================================
+# STAGE 2: Runtime Environment
+# ==========================================
 
+# Use only the JRE for running the application
+FROM eclipse-temurin:17-jre-alpine
+
+# Set the production workspace
+WORKDIR /app
+
+# Copy only the compiled class file from the builder stage
+COPY --from=builder /build/Main.class /app/Main.class
+
+# Copy the required text file
+COPY quotes.txt /app/quotes.txt
+
+# Document the application's port
+EXPOSE 8000
+
+# Run the Java application
+CMD ["java", "Main"]
+```
+
+## How the Multi-Stage Build Works
+
+### Stage 1 — Builder
+
+```dockerfile
+FROM eclipse-temurin:17-jdk-alpine AS builder
+```
+
+- Uses the full **JDK**.
+- The JDK contains the `javac` compiler.
+- Java source code is copied into the container.
+- `javac Main.java` creates `Main.class`.
+
+### Stage 2 — Runtime
+
+```dockerfile
+FROM eclipse-temurin:17-jre-alpine
+```
+
+- Uses only the **JRE**.
+- The JRE contains the components required to run the Java application.
+- The JDK compiler is not included.
+
+### Copying the Compiled Application
+
+```dockerfile
+COPY --from=builder /build/Main.class /app/Main.class
+```
+
+Only the compiled `Main.class` file is copied from the builder stage.
+
+This means the following are not carried into the final image:
+
+- JDK compiler
+- Build environment
+- Temporary build files
+- Original `Main.java` source file
+
+---
+
+# 2. Compare Image Sizes
+
+Then check the image sizes again:
+
+```bash
+docker images
+```
+![Docker Images Output](images/Screenshot34.png)
+
+
+---
+
+# 3. Document the Differences
+
+## Comparison Table
+
+| Attribute | Original Dockerfile | Multi-Stage Dockerfile | Benefit |
+|---|---|---|---|
+| Build Environment | Full JDK | Full JDK only in builder stage | Build tools don't remain in production |
+| Runtime Environment | Full JDK | JRE Alpine | Smaller final image |
+| Operating System | Standard Temurin image | Alpine-based image | Smaller footprint |
+| Compiler | Present in final image | Only in builder stage | Removes unnecessary tools |
+| Source Code | Present | Only compiled `.class` file copied | Cleaner final image |
+| Build Files | May remain in image | Left in builder stage | Reduces unnecessary files |
+| Security | More tools available | Fewer tools in final image | Smaller attack surface |
+| Deployment | Larger image | Smaller image | Faster image transfer |
+
+---
+
+# 4. Main Benefits of Multi-Stage Builds
+
+## 1. Smaller Docker Image 📦
+
+- Build tools are not included in the final image.
+- Only the files required to run the application are copied.
+- This helps reduce the final image size.
+
+## 2. Faster Deployment ⚡
+
+- Smaller images require less time to upload and download.
+- Containers can be deployed faster.
+- This is especially useful in CI/CD pipelines.
+
+## 3. Better Security 🔒
+
+- Development tools such as compilers are not included in the production image.
+- Fewer installed tools mean fewer potential security vulnerabilities.
+- The final container has a smaller attack surface.
+
+## 4. Separation of Build and Runtime 🏗️➡️🚀
+
+- The **builder stage** is responsible for compiling the application.
+- The **runtime stage** is responsible only for running the application.
+- This creates a clean separation between development and production environments.
+
+## 5. Less Storage Usage 💾
+
+- Smaller images require less disk space.
+- Docker registries need less storage.
+- Servers require less space for storing images.
+
+## 6. Cleaner Production Image 🧹
+
+The final image does not need:
+
+- Source code
+- Compiler
+- Build tools
+- Temporary build files
+- Unnecessary development dependencies
+
+Only the required runtime files are included.
+
+## 7. Easier Maintenance 🔧
+
+- Build and runtime environments are clearly separated.
+- The Dockerfile becomes easier to understand.
+- Production images remain focused on running the application.
+
+---

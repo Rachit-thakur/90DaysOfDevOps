@@ -848,3 +848,65 @@ Only the required runtime files are included.
 - Production images remain focused on running the application.
 
 ---
+
+# Task 5: Manage Your Image with Docker Hub
+
+## 1. Tag Your Image
+
+Tag the Docker image with a version tag:
+
+```bash
+docker tag rachitthakur/multi-javaapp:latest rachitthakur/multi-javaapp:latest
+```
+
+---
+
+## 2. Push Your Image to Docker Hub
+
+First, log in to Docker Hub:
+
+```bash
+docker login
+```
+
+![Docker Login](images/Screenshot35.png)
+
+After successful login, push the Docker image to Docker Hub:
+
+```bash
+docker push rachitthakur/multi-javaapp:latest
+```
+
+![Docker Push](images/Screenshot36.png)
+
+### Successfully Pushed to Docker Hub
+
+The image was successfully pushed to Docker Hub.
+
+![Docker Hub Image](images/Screenshot37.png)
+
+---
+
+## 3. Pull the Image
+
+To verify that the image is available on Docker Hub, pull the image:
+
+```bash
+docker pull rachitthakur/multi-javaapp:latest
+```
+
+![Docker Pull](images/Screenshot38.png)
+
+---
+
+## Summary
+
+The Docker image was successfully:
+
+- Tagged with a version tag.
+- Pushed to Docker Hub.
+- Verified by pulling it from Docker Hub.
+
+The image `rachitthakur/multi-javaapp:latest` is now available on Docker Hub for use and distribution.
+
+---

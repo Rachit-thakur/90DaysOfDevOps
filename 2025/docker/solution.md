@@ -910,3 +910,118 @@ The Docker image was successfully:
 The image `rachitthakur/multi-javaapp:latest` is now available on Docker Hub for use and distribution.
 
 ---
+
+# Task 6: Persist Data with Docker Volumes
+
+## 1. Create a Docker Volume
+
+Create a Docker volume named `my_volume`:
+
+```bash
+docker volume create my_volume
+```
+
+### Screenshot
+
+![Docker Volume Create](images/Screenshot39.png)
+
+---
+
+## 2. Check the Volume and Its Location
+
+To check the details and location of the Docker volume, run:
+
+```bash
+docker volume inspect my_volume
+```
+
+This command shows information such as the volume name, driver, and mount point.
+
+On a Linux system, the volume is usually stored under:
+
+```text
+/var/lib/docker/volumes/my_volume/_data
+```
+
+### Screenshot
+
+![Docker Volume Inspect](images/Screenshot40.png)
+
+---
+
+## 3. Run a Container with the Volume
+
+Run the Docker container and attach the `my_volume` volume to `/app/data` inside the container:
+
+```bash
+docker run -d -v my_volume:/app/data <your-username>/sample-app:v1.0
+```
+
+For example:
+
+```bash
+docker run -d -v my_volume:/app/data rachitthakur/multi-javaapp:latest
+```
+
+Here:
+
+- `my_volume` → Docker volume
+- `/app/data` → directory inside the container
+- `-v` → mounts the volume to the container
+- `multi-javaapp:latest` → Docker image being used
+
+### Screenshot
+
+![Docker Container with Volume](images/Screenshot41.png)
+
+---
+
+# How Docker Volumes Help with Data Persistence
+
+Docker containers are generally temporary. When a container is deleted, data stored only inside the container can also be lost.
+
+Docker volumes solve this problem by storing data separately from the container.
+
+If the container is removed, the volume and its data remain available.
+
+A new container can use the same volume:
+
+```bash
+docker run -d -v my_volume:/app/data <your-username>/sample-app:v1.0
+```
+
+The previously stored data can then be accessed by the new container.
+
+---
+
+# Why Docker Volumes Are Useful
+
+## 1. Data Persistence
+
+Data remains available even when containers are deleted or recreated.
+
+## 2. Container-Independent Storage
+
+The data is stored separately from the container's lifecycle.
+
+## 3. Easy Backup
+
+Docker volume data can be backed up and restored when required.
+
+## 4. Sharing Data
+
+The same volume can be mounted to multiple containers when sharing data is required.
+
+## 5. Useful for Databases
+
+Docker volumes are commonly used for databases such as **MySQL** and **PostgreSQL** because database data needs to survive container restarts, upgrades, and recreation.
+
+---
+
+## Summary
+
+Docker volumes provide **persistent storage** for containers. They keep application data separate from the container, allowing the data to survive when containers are stopped, removed, or recreated.
+
+Therefore, Docker volumes are especially useful for **databases, application data, backups, and sharing data between containers**.
+
+---

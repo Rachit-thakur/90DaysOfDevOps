@@ -1027,19 +1027,122 @@ Therefore, Docker volumes are especially useful for **databases, application dat
 ---
 
 # Task 7: Configure Docker Networking
-1. **Create a Custom Docker Network:**  
-   - Create a custom Docker network:
-     ```bash
-     docker network create two-tier
-     ```
-     ![Docker Container with Volume](images/Screenshot42.png)
-2. **Run Containers on the Same Network:**  
-   - Run two containers (e.g., your sample app and a simple database like MySQL) on the same network to demonstrate inter-container communication:
-     ```bash
-     docker run -d --name sample-app --network my_network <your-username>/sample-app:v1.0
-     docker run -d --name my-db --network my_network -e MYSQL_ROOT_PASSWORD=root mysql:latest
-     ```
-3. **Document the Process:**  
-   - In `solution.md`, describe how Docker networking enables container communication and its significance in multi-container applications.
+
+## 1. Create a Custom Docker Network
+
+Create a custom Docker network named `two-tier` to allow containers to communicate with each other.
+
+```bash
+docker network create two-tier
+```
+
+**Screenshot:**
+
+![Docker Network Creation](images/Screenshot42.png)
+
+## 2. Run Containers on the Same Network
+
+Run the Flask application and MySQL database containers on the same Docker network.
+
+### Run the Flask Application Container
+
+```bash
+docker run -d \
+  --name flask-app \
+  --network two-tier \
+  -p 5000:5000 \
+  -e MYSQL_HOST=my-db \
+  -e MYSQL_USER=root \
+  -e MYSQL_PASSWORD=root \
+  -e MYSQL_DB=mydatabase \
+  rachitthakur/two-tier-flask-app:latest
+```
+
+### Run the MySQL Database Container
+
+```bash
+docker run -d \
+  --name my-db \
+  --network two-tier \
+  -e MYSQL_ROOT_PASSWORD=root \
+  -e MYSQL_DATABASE=mydatabase \
+  mysql:latest
+```
+
+**Note:** The database must be initialized and ready before the Flask application can connect successfully. If the containers already exist, remove or reuse them as appropriate rather than creating duplicate containers.
+
+**Screenshot:**
+
+![Docker Containers](images/Screenshot43.png)
+
+## 3. Verify Docker Network Configuration
+
+Use the following command to inspect the custom network:
+
+```bash
+docker network inspect two-tier
+```
+
+This command displays network details, including the containers connected to it.
+
+Verify that both `flask-app` and `my-db` appear in the container list.
+
+**Screenshot:**
+
+![Docker Network Inspection](images/Screenshot44.png)
+
+## 4. Access the Flask Application
+
+The `-p 5000:5000` option publishes container port 5000 on port 5000 of the host machine.
+
+Open the following address in your browser:
+
+```text
+http://localhost:5000
+```
+
+The application should be accessible if the Flask container is running correctly and listening on port 5000.
+
+**Screenshot:**
+
+![Flask Application Running](images/Screenshot45.png)
+
+## 5. Docker Networking and Its Significance in Multi-Container Applications
+
+### What Is Docker Networking?
+
+Docker networking is a feature that allows containers to communicate with each other, the host machine, and external networks.
+
+### How Docker Networking Works
+
+1. Docker creates a virtual network to connect containers.
+2. Containers connected to the same network can communicate with each other.
+3. Containers can communicate using their names or IP addresses.
+4. Docker manages communication between containers.
+5. Port mapping allows external users to access applications running inside containers.
+
+**Example:**
+
+In a web application, the frontend container communicates with the backend container, and the backend container communicates with the database container.
+
+### Types of Docker Networks
+
+1. **Bridge Network:** Connects containers running on the same Docker host.
+2. **Host Network:** Allows a container to use the host machine's network directly.
+3. **None Network:** Provides network isolation to a container.
+4. **Overlay Network:** Connects containers across multiple Docker hosts in supported configurations.
+
+### Significance of Docker Networking
+
+1. **Communication:** Allows containers to exchange data with each other.
+2. **Security:** Helps isolate containers using separate networks.
+3. **Service Discovery:** Allows containers on a user-defined bridge network to find each other using container names.
+4. **Scalability:** Supports applications that use multiple containers.
+5. **Port Mapping:** Allows external users to access container applications.
+6. **Easy Management:** Makes connecting and managing containers easier.
+
+### Conclusion
+
+Docker networking plays an important role in multi-container applications. It allows different containers, such as frontend, backend, and database containers, to communicate and work together efficiently.
 
 ---

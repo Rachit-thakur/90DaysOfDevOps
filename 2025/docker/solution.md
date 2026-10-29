@@ -1146,3 +1146,183 @@ In a web application, the frontend container communicates with the backend conta
 Docker networking plays an important role in multi-container applications. It allows different containers, such as frontend, backend, and database containers, to communicate and work together efficiently.
 
 ---
+
+# Task 8: Orchestrate with Docker Compose
+
+## 1. Introduction
+
+Docker Compose is a tool used to define and manage multi-container Docker applications. It allows us to configure multiple services, networks, and volumes in a single YAML file.
+
+In this task, I used Docker Compose to deploy a two-tier Flask application with a MySQL database.
+
+## 2. Create a `docker-compose.yml` File
+
+Create a file named `docker-compose.yml` in the root directory of the project.
+
+### Docker Compose Configuration
+
+```yaml
+services:
+  flask-app:
+    image: rachitthakur/two-tier-flask-app:latest
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      MYSQL_HOST: my-db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_DB: mydatabase
+    depends_on:
+      my-db:
+        condition: service_healthy
+    networks:
+      - two-tier
+    restart: unless-stopped
+
+  my-db:
+    image: mysql:8.0
+    container_name: my-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - two-tier
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+networks:
+  two-tier:
+    driver: bridge
+
+volumes:
+  mysql_data:
+```
+
+## 3. Explanation of the Configuration
+
+### A. Flask Application Service
+
+The `flask-app` service runs the Flask web application using an image hosted on Docker Hub.
+
+- **Image:** Downloads and runs the Flask application image.
+- **Container name:** Names the container `flask-app`.
+- **Ports:** Maps host port 5000 to container port 5000.
+- **Environment variables:** Configure the MySQL connection.
+- **Depends on:** Waits for the MySQL service to pass its health check before starting Flask.
+- **Networks:** Connects Flask to the `two-tier` network.
+- **Restart policy:** Restarts the container unless it has been explicitly stopped.
+
+### B. MySQL Database Service
+
+The `my-db` service runs the MySQL database.
+
+- **Image:** Uses the MySQL 8.0 image.
+- **Container name:** Names the container `my-db`.
+- **Environment variables:** Set the MySQL root password and create the `mydatabase` database during initial database initialization.
+- **Volumes:** Store database files persistently.
+- **Networks:** Connects MySQL to the `two-tier` network.
+- **Health check:** Checks whether MySQL is ready to accept connections.
+- **Restart policy:** Restarts the container unless it has been explicitly stopped.
+
+### C. Networks
+
+The `two-tier` network uses the bridge driver.
+
+It allows the Flask application and MySQL database containers to communicate with each other.
+
+Flask connects to MySQL using the hostname `my-db` rather than `localhost`.
+
+### D. Volumes
+
+The `mysql_data` volume stores MySQL database files outside the container's writable layer.
+
+This helps preserve database data when the MySQL container is recreated.
+
+## 4. Deploy the Application
+
+Run the following command from the directory containing `docker-compose.yml`:
+
+```bash
+docker-compose up -d
+```
+
+This command creates the necessary network and volume, then starts the Flask and MySQL services in the background.
+
+**Screenshot:**
+
+![Flask Application Running](images/Screenshot46.png)
+
+## 5. Verify the Deployment
+
+Check the status of the containers:
+
+```bash
+docker-compose ps
+```
+
+View the application logs:
+
+```bash
+docker-compose logs flask-app
+```
+
+View the database logs:
+
+```bash
+docker-compose logs my-db
+```
+
+## 6. Access the Application
+
+Open a web browser and visit:
+
+```text
+http://localhost:5000
+```
+
+The Flask application should be accessible if the container is running correctly and listening on port 5000.
+
+**Screenshot:**
+
+![Flask Application](images/Screenshot45.png)
+
+## 7. Shut Down the Application
+
+To stop and remove the containers and the Compose-created network, run:
+
+```bash
+docker-compose down
+```
+
+The named `mysql_data` volume is preserved by default, so database data can remain available when the application is started again.
+
+**Screenshot:**
+
+![Docker Compose Shutdown](images/Screenshot47.png)
+
+## 8. Benefits of Docker Compose
+
+1. **Simple management:** Runs multiple containers using a single command.
+2. **Easy configuration:** Defines services, networks, and volumes in one YAML file.
+3. **Networking:** Allows containers to communicate using service names.
+4. **Data persistence:** Volumes preserve database files beyond the container lifecycle.
+5. **Automation:** Starts services in the required order and can wait for health checks.
+6. **Portability:** Makes it easier to run the same application setup on different systems with Docker Compose installed.
+
+## 9. Conclusion
+
+Docker Compose simplifies the deployment and management of multi-container applications.
+
+In this task, I used Docker Compose to run a Flask web application and a MySQL database. I configured networking for communication between the services, used a volume to persist database data, and added a health check to ensure MySQL was ready before Flask started.
+
+This approach makes the application easier to deploy, manage, and maintain.
+
+---

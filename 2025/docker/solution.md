@@ -1328,28 +1328,307 @@ This approach makes the application easier to deploy, manage, and maintain.
 ---
 
 # Task 9: Analyze Your Image with Docker Scout
-1. **Install Docker Scout**
-   - By using following commands:
-     ```bash
-      curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
 
-      sh install-scout.sh
-      ```
-   - Verify by using: 
-     ```bash
-     docker scout version
-     ```  
-2. **Run Docker Scout Analysis:**  
-   - Execute Docker Scout on your image to generate a detailed report of vulnerabilities and insights:
-     ```bash
-     docker scout cves <your-username>/sample-app:v1.0
-     ```
-   - Alternatively, if available, run:
-     ```bash
-     docker scout quickview <your-username>/sample-app:v1.0
-     ```
-     to get a summarized view of the image’s security posture.
-   - **Optional:** Save the output to a file for further analysis:
-     ```bash
-     docker scout cves <your-username>/sample-app:v1.0 > scout_report.txt
-     ```
+## 1. Install Docker Scout
+
+Docker Scout is a tool used to analyze Docker images and identify security vulnerabilities.
+
+### Download Docker Scout
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
+```
+
+### Run the Installation Script
+
+```bash
+sh install-scout.sh
+```
+
+### Verify Installation
+
+```bash
+docker scout version
+```
+
+The above command verifies that Docker Scout is installed successfully.
+
+---
+
+## 2. Run Docker Scout Analysis
+
+Run Docker Scout against the Docker image to identify vulnerabilities.
+
+### Scan Image for Vulnerabilities
+
+```bash
+docker scout cves rachitthakur/two-tier-flask-app:latest
+```
+
+### Get Image Security Summary
+
+```bash
+docker scout quickview rachitthakur/two-tier-flask-app:latest
+```
+
+### Save the Scan Report
+
+To save the vulnerability report into a text file:
+
+```bash
+docker scout cves rachitthakur/two-tier-flask-app:latest > scout_report.txt
+```
+
+This creates `scout_report.txt`, which can be used for further analysis.
+
+---
+
+## 3. Review and Interpret the Report
+
+### Successfully Scanned Image
+
+| Detail | Information |
+|---|---|
+| Image Name | `rachitthakur/two-tier-flask-app:latest` |
+| Image Digest | `03c414306279` |
+| Platform | `linux/amd64` |
+| Image Size | 177 MB |
+| Packages Indexed | 211 |
+| Vulnerable Packages | 26 |
+| Total Vulnerabilities | 161 |
+
+### Vulnerability Summary
+
+| Severity | Number of Vulnerabilities |
+|---|---:|
+| Critical | 3 |
+| High | 20 |
+| Medium | 28 |
+| Low | 110 |
+| **Total** | **161** |
+
+### Analysis Result
+
+Docker Scout detected **161 vulnerabilities across 26 packages**.
+
+- Critical: 3 vulnerabilities.
+- High: 20 vulnerabilities.
+- Medium: 28 vulnerabilities.
+- Low: 110 vulnerabilities.
+
+Critical and High vulnerabilities should be prioritized because they represent the most important security risks identified by the scan.
+
+---
+
+## 4. Affected Dependencies and Layers
+
+The scan identified vulnerabilities in two major dependency groups.
+
+### A. Python Application Dependencies
+
+The following Python packages were identified:
+
+- Flask
+- Werkzeug
+- Requests
+- urllib3
+- Certifi
+- pip
+- wheel
+- setuptools
+- jaraco-context
+
+These packages are related to the Python application and its dependencies.
+
+### B. Operating System Dependencies
+
+The following operating system packages were identified:
+
+- MariaDB
+- OpenSSL
+- PCRE2
+- zlib
+- binutils
+- glibc
+- coreutils
+- systemd
+- SQLite
+- Perl
+- APT
+- Other system utilities
+
+These packages may be inherited from the base image or installed during the Docker build.
+
+### C. Layer Identification
+
+Docker Scout identifies vulnerable packages but the provided scan output does not map every vulnerability to an exact Dockerfile instruction or layer number.
+
+The likely sources are:
+
+1. Base image layers inherited from `python:3.9-slim`.
+2. Python dependencies installed through `requirements.txt` or pip.
+3. Operating system packages installed during the Docker build.
+4. Additional application dependencies included in the final image.
+
+### Inspect Docker Image Layers
+
+To check the image build history:
+
+```bash
+docker history rachitthakur/two-tier-flask-app:latest
+```
+
+To inspect image configuration:
+
+```bash
+docker image inspect rachitthakur/two-tier-flask-app:latest
+```
+
+These commands help investigate the image structure and the instructions used to build it.
+
+---
+
+## 5. Recommended Remediation
+
+### A. Update the Base Image
+
+The current base image is:
+
+```dockerfile
+FROM python:3.9-slim
+```
+
+Docker Scout recommends moving to:
+
+```dockerfile
+FROM python:3.12-slim
+```
+
+### Base Image Comparison
+
+The base-image comparison reported the following estimated changes:
+
+| Severity | Python 3.9-slim | Python 3.12-slim | Reduction |
+|---|---:|---:|---:|
+| Critical | 9 | 0 | 9 |
+| High | 39 | 1 | 38 |
+| Medium | 35 | 6 | 29 |
+| Low | 63 | 27 | 36 |
+
+**Note:** These figures represent Scout's base-image comparison, not guaranteed vulnerability counts for the complete application image. Application compatibility should be tested before upgrading Python.
+
+### B. Update Python Dependencies
+
+Update vulnerable dependencies in `requirements.txt` using compatible patched versions.
+
+Examples of fixed versions reported by Scout:
+
+| Package | Recommended Fixed Version |
+|---|---|
+| certifi | 2026.10.19 |
+| urllib3 | 2.8.0 |
+| Werkzeug | 3.1.6 |
+| Flask | 2.2.5 |
+| wheel | 0.46.2 |
+| jaraco-context | 6.1.0 |
+| pip | 26.2.0 |
+| requests | 2.33.0 |
+| setuptools | 84.1.0 |
+
+These are examples of advisory-specific fixed versions reported by Scout. Check all applicable advisories and application compatibility before selecting final dependency versions.
+
+After updating dependencies, rebuild and test the application.
+
+### C. Update Operating System Packages
+
+Update operating system packages during the Docker build.
+
+Example:
+
+```dockerfile
+RUN apt-get update && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
+```
+
+This helps install available security updates and remove unnecessary package cache files.
+
+Rebuild and scan the image after updating packages.
+
+### D. Run Container as a Non-Root User
+
+Docker Scout reported that the container runs as root.
+
+Create a non-root user in the Dockerfile:
+
+```dockerfile
+RUN useradd -m appuser
+
+USER appuser
+```
+
+**Benefits:**
+
+- Reduces security risks.
+- Limits container privileges.
+- Helps prevent unauthorized system-level changes.
+- Improves container security.
+
+Ensure that the application files and required directories are accessible to this user.
+
+### E. Use Multi-Stage Docker Builds
+
+Use multi-stage builds to keep unnecessary build tools out of the final image.
+
+**Benefits:**
+
+- Smaller Docker image size.
+- Reduced attack surface.
+- Better security.
+- Cleaner production image.
+
+### F. Review Unnecessary Packages
+
+Remove unnecessary dependencies and packages from the image.
+
+Recommended actions:
+
+- Install only required packages.
+- Avoid unnecessary system utilities.
+- Review copyleft-licensed packages.
+- Keep application dependencies updated.
+- Remove unnecessary build tools from the final image.
+
+---
+
+## 6. Final Security Recommendations
+
+Based on the Docker Scout analysis, the following security practices are recommended:
+
+1. Use updated and trusted base images.
+2. Regularly scan Docker images using Docker Scout.
+3. Update vulnerable application dependencies.
+4. Patch operating system packages.
+5. Run containers using non-root users.
+6. Use multi-stage Docker builds.
+7. Review package licenses.
+8. Pin and regularly review dependency versions.
+9. Rebuild images after applying security updates.
+10. Perform another Docker Scout scan to verify the improvements.
+
+---
+
+**Final Status:** Vulnerabilities identified and remediation recommendations documented. The fixes have not yet been verified through a new Docker Scout scan.
+
+---
+
+## 8. Screenshots and Evidence
+
+Add your Docker Scout screenshots inside the `images` directory.
+
+### Display Screenshots on GitHub
+
+![Docker Scout Quickview](images/Screenshot48.png)
+
+![Docker Scout Vulnerability Report](images/Screenshot49.png)
+
+---

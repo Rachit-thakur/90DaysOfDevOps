@@ -1,94 +1,427 @@
-https://networking-concepts.hashnode.dev/networking-concepts-for-newbies
-# WHAT IS NETWORKING?
-Networking, in simple terms, is the process of connecting computers, devices, or systems together so they can communicate and share information. It's like how people talk to each other over the phone, send emails, or chat in person. But instead of people, it's devices like computers, printers, or phones exchanging data.
 
-# WHAT IS ROUTER?
-A router is a network device that forwards data packets between computer networks, typically between a local area network (LAN) and a wide area network (WAN) like the internet. The router takes the internet connection from your service provider (like a cable or fiber connection) and shares it with all the devices in your home or office. Routers operate at the network layer (Layer 3) of the OSI model.
+# Networking Concepts for Beginners
 
-# PROTOCOLS AND THEIR PORT NUMBER
-In networking, protocols are a set of rules and conventions that determine how data is transmitted, received, and processed between devices over a network, each protocol typically operates on a specific port number, which is a unique identifier used to direct network traffic to the correct service or application on a device. Port numbers range from 0 to 65535.
+## Table of Contents
 
-# TYPES OF PROTOCOL
-## HTTP (Hyper Text Transfer Protocol) -port number 80
-HTTP is the protocol used for transferring web pages and data over the internet. It defines how web browsers and web servers communicate.
+1. [What is Networking?](#1-what-is-networking)
+2. [What is a Router?](#2-what-is-a-router)
+3. [Protocols and Port Numbers](#3-protocols-and-port-numbers)
+4. [Types of Network Protocols](#4-types-of-network-protocols)
+   - [HTTP](#http-hypertext-transfer-protocol)
+   - [HTTPS](#https-hypertext-transfer-protocol-secure)
+   - [FTP](#ftp-file-transfer-protocol)
+   - [SSH](#ssh-secure-shell)
+   - [DNS](#dns-domain-name-system)
+5. [OSI Model](#5-osi-open-systems-interconnection-model)
+6. [TCP/IP Model](#6-tcpip-model)
+7. [OSI vs TCP/IP Model](#7-osi-vs-tcpip-model)
 
-<ins>*Common use:*</ins> Web browsing.
+---
 
-## HTTPS (Hyper Text Transfer Protocol Secure)- port number 443
-HTTPS is a secure version of HTTP. It encrypts the communication between the web browser and the server.
+# 1. What is Networking?
 
-<ins>*Common use:*</ins> Secure browsing (e.g., online banking, shopping).
+Networking is the process of connecting computers, devices, or systems so they can communicate and share information.
 
-## FTP (File Transfer Protocol) - port number 20, 21
-FTP is used for transferring files between computers on a network. FTP connects to a server, and users can upload or download files between their local machine and the server.
+It is similar to how people communicate through phone calls, emails, or messages. In networking, devices such as computers, printers, servers, and mobile phones exchange data with each other.
 
-Port 21: Used for the control connection (sending commands).
+### Examples:
+- Sharing files between computers.
+- Connecting computers to the internet.
+- Sending emails.
+- Accessing websites.
+- Connecting a printer to multiple computers.
 
-Port 20: Used for the data connection (sending files).
+# 2. What is a Router?
 
-<ins>*Common use:*</ins> Used by website owners to upload or download files from their web hosting servers or for sharing large files.
+A router is a networking device that forwards data packets between different networks.
 
-## SSH (Secure Shell) -port number 22
-SSH provides secure, encrypted remote access to systems and devices, often used for administration of servers.
+It is commonly used to connect a Local Area Network (LAN) to a Wide Area Network (WAN), such as the internet.
 
-<ins>*Common use:*</ins> Remote login to Linux/Unix servers, secure file transfer (SFTP).
+A router receives an internet connection from an Internet Service Provider (ISP) and distributes it to multiple devices.
 
-## DNS (Domain Name System) -port number 53
-DNS is responsible for translating human-readable domain names (like www.example.com) into IP addresses, so browsers and other services can connect to websites.
+### Functions of a Router
 
-<ins>*Common use:*</ins> Resolving domain names into IP addresses.
+- Connects different networks.
+- Forwards data packets.
+- Determines the best path for data transmission.
+- Connects LAN to WAN.
+- Supports communication between different networks.
 
-# OSI (OPEN SYSTEM INTERCONNECTION MODEL)
-The OSI model is a theoretical framework that describes the different stages involved in network communication. It has 7 layers that work together to help transmit data from one system to another.
+### OSI Layer
 
-## What is the OSI model?
+A router primarily operates at **Layer 3 (Network Layer)** of the OSI model.
 
-### 1. APPLICATION LAYER (layer 7)
-This layer is closest to the end user. It provides network services directly to the user, like web browsing, email, and file transfer.
+# 3. Protocols and Port Numbers
 
-***Real life example:*** Imagine you’re sending a letter to a friend. This is where you write the letter itself. You decide the content and purpose, just like how an application like a web browser or email works in this layer.
-### 2. PRESENTATION LAYER (layer 6)
-It translates, encrypts, or compresses data. It ensures that data is in a readable format for the application layer. It also handles data encoding and encryption/decryption.
+A network protocol is a set of rules that defines how data is transmitted, received, and processed between devices.
 
-***Real life example:*** You then decide on the format of the letter — maybe you use special handwriting, a special envelope, or add pictures. In the network world, this layer makes sure that the data is in the correct format or encryption for the recipient to understand.
-### 3. SESSION LAYER (layer 5)
-This layer manages and controls the communication sessions. It establishes, maintains, and terminates connections between applications.
+A port number identifies a specific service or application running on a device.
 
-***Real life example:*** This layer manages the conversation. Before you send the letter, you might confirm with your friend when they’re free to receive it. In networking, the session layer manages the connection between two devices, making sure they can "talk" properly.
-### 4. TRANSPORT LAYER (layer 4)
-This layer is responsible for ensuring end-to-end communication, error correction, and flow control. It divides data into segments and ensures it is delivered correctly.
+Port numbers range from **0 to 65535**.
 
-***Real life example:*** Now, you send the letter using a postal service. The transport layer ensures that the data reaches the right address, and if it doesn’t, it’ll ask for the letter to be sent again (error checking).
-### 5. NETWORK LAYER (layer 3)
-It handles routing, addressing, and forwarding of data across networks. It determines the best path to transfer data to its destination.
+### Common Network Protocols and Port Numbers
 
-***Real life example:*** Here, the postal service looks at the destination address and chooses the best route to deliver the letter. In networking, this layer decides how the data will travel across different networks, like choosing the best path to a destination.
-### 6. DATA LINK LAYER (layer 2)
-This layer handles physical addressing (MAC addresses), error detection, and flow control at the data link level. It ensures the data is properly formatted for transmission over a specific medium (e.g., Ethernet or Wi-Fi).
+| Protocol | Port Number | Purpose |
+|---|---:|---|
+| HTTP | 80 | Web communication |
+| HTTPS | 443 | Secure web communication |
+| FTP | 20, 21 | File transfer |
+| SSH | 22 | Secure remote access |
+| DNS | 53 | Domain name resolution |
+| Telnet | 23 | Remote terminal access |
+| SMTP | 25 | Sending emails |
+| POP3 | 110 | Receiving emails |
+| IMAP | 143 | Email access |
+| MySQL | 3306 | Database communication |
+| PostgreSQL | 5432 | Database communication |
+| RDP | 3389 | Remote desktop access |
 
-***Real life example:*** This is like the postal worker who delivers the letter to your friend’s mailbox. It checks if the letter has reached the correct physical location (for example, a specific house or building).
-### 7. PHYSICAL LAYER (layer 1)
-This is the lowest layer, and it deals with the actual physical connection between devices. It handles transmission of raw data (as electrical signals, light pulses, etc.) over the communication medium (like cables, fiber optics, or wireless signals).
+**Note:** These are common default ports. Services can be configured to use different ports.
 
-***Real life example:*** Finally, the physical layer involves the actual delivery — the postal worker physically bringing the letter to your friend's door. In networking, this is the hardware (cables, routers, etc.) that transmits the actual data.
-# TCP/IP MODEL
-The TCP/IP model is a more practical, streamlined model compared to OSI. It was created to guide the development of the internet and its communication protocols. Unlike OSI, it has 4 layers that map closely to the functions of the OSI model.
+# 4. Types of Network Protocols
 
-TCP/IP Model - GeeksforGeeks
+## HTTP (Hypertext Transfer Protocol)
 
-### 1. APPLICATION LAYER (corresponds to OSI layers 5-7)
-This layer contains protocols that provide end-user services. It handles high-level functions like file transfer, email, and browsing.
+**Port Number: 80**
 
-***Real life example:*** Think of making a phone call — a more real-time interaction. This is where you use an app like Skype or WhatsApp. You decide to make a phone call (or send a message). This is the interface where the user interacts with the network, similar to how a web browser or an email client works.
-### 2. TRANSPORT LAYER (corresponds to OSI layer 4)
-The Transport Layer ensures reliable data transfer between two systems. The two main protocols here are TCP (Transmission Control Protocol) and UDP (User Datagram Protocol). TCP guarantees reliable delivery of data by ensuring error-free transmission, while UDP is faster but less reliable.
+HTTP is a protocol used to transfer web pages and data over the internet.
 
-***Real life example:*** When you make the call, the transport layer ensures that your voice (or message) is split into small pieces (called packets) and reliably delivered to the other person. It also makes sure the call is intact without errors (like TCP does).
-### 3. INTERNET LAYER (corresponds to OSI layer 3)
-This layer is responsible for logical addressing (IP addressing) and routing data across networks. The main protocol at this layer is IP (Internet Protocol), which ensures data packets are sent to the correct destination.
+It defines how web browsers and web servers communicate.
 
-***Real life example:*** This layer makes sure the data gets routed through the right network. Imagine there’s a call center that handles the routing of phone calls. The internet layer determines the best way for the call to travel across the network.
-### 4. LINK LAYER(corresponds to OSI layer 1-2)
-The Link Layer handles the physical transmission of data over the network. It defines how data is formatted and transmitted over the hardware (Ethernet, Wi-Fi, etc.).
+### Common Uses
+- Opening websites.
+- Transferring web pages.
+- Communicating between browsers and web servers.
 
-***Real life example:*** This is like the phone line itself, or the wireless connection. It’s the physical path your call or data takes to get to the other person. In networks, this involves things like Ethernet cables, Wi-Fi, or other local networks.
+## HTTPS (Hypertext Transfer Protocol Secure)
+
+**Port Number: 443**
+
+HTTPS is the secure version of HTTP.
+
+It uses TLS encryption to protect communication between a browser and a web server.
+
+### Common Uses
+- Online banking.
+- Online shopping.
+- Secure website communication.
+- Protecting sensitive information.
+
+## FTP (File Transfer Protocol)
+
+**Port Numbers: 20 and 21**
+
+FTP is used to transfer files between computers over a network.
+
+It allows users to upload and download files from an FTP server.
+
+### Port Details
+
+- **Port 21:** Used for the control connection.
+- **Port 20:** Traditionally used for data transfer in active FTP mode.
+
+### Common Uses
+- Uploading website files.
+- Downloading files from servers.
+- Transferring files between systems.
+
+## SSH (Secure Shell)
+
+**Port Number: 22**
+
+SSH is a secure protocol used to remotely access and manage servers.
+
+It encrypts communication between the client and the server.
+
+### Common Uses
+- Remote login to Linux servers.
+- Executing commands on remote systems.
+- Secure file transfer using SFTP.
+- Server administration.
+
+Example:
+
+```bash
+ssh username@server-ip
+```
+
+## DNS (Domain Name System)
+
+**Port Number: 53**
+
+DNS translates human-readable domain names into IP addresses.
+
+For example:
+
+```text
+www.google.com -> IP Address
+```
+
+When you enter a website name in your browser, DNS helps find the IP address of the server hosting that website.
+
+### Common Uses
+- Domain name resolution.
+- Finding server IP addresses.
+- Helping browsers access websites.
+
+DNS commonly uses:
+- UDP port 53 for standard queries.
+- TCP port 53 for cases such as zone transfers and some larger responses.
+
+---
+
+# 5. OSI (Open Systems Interconnection) Model
+
+The OSI model is a theoretical framework that explains how communication happens between two devices over a network.
+
+It consists of **7 layers**. Each layer performs a specific function during network communication.
+
+## Seven Layers of the OSI Model
+
+| Layer | Name | Main Function |
+|---:|---|---|
+| 7 | Application | Provides network services to applications |
+| 6 | Presentation | Data translation, encryption, and compression |
+| 5 | Session | Establishes and manages communication sessions |
+| 4 | Transport | End-to-end data delivery |
+| 3 | Network | Logical addressing and routing |
+| 2 | Data Link | MAC addressing and frame delivery |
+| 1 | Physical | Transmission of raw bits |
+
+## Layer 7: Application Layer
+
+This layer is closest to the end user.
+
+It provides network services to applications such as web browsers and email clients.
+
+### Examples
+- HTTP
+- HTTPS
+- FTP
+- DNS
+- SMTP
+
+**Real-life example:** Writing a letter to a friend. You decide what information you want to communicate.
+
+## Layer 6: Presentation Layer
+
+This layer handles data formatting, translation, encryption, decryption, and compression.
+
+It ensures that data is represented in a format the receiving application can understand.
+
+### Main Functions
+- Data translation.
+- Encryption and decryption.
+- Data compression.
+
+**Real-life example:** Choosing the format and language of a letter so the receiver can understand it.
+
+## Layer 5: Session Layer
+
+This layer establishes, manages, and terminates communication sessions between applications.
+
+### Main Functions
+- Establishing sessions.
+- Maintaining sessions.
+- Terminating sessions.
+
+**Real-life example:** Managing a conversation between two people, including when it starts and ends.
+
+## Layer 4: Transport Layer
+
+The Transport Layer provides end-to-end communication between systems.
+
+It handles segmentation, flow control, and error recovery depending on the transport protocol.
+
+### Main Protocols
+- TCP (Transmission Control Protocol).
+- UDP (User Datagram Protocol).
+
+**Real-life example:** Sending a letter through a postal service and ensuring it reaches the correct recipient.
+
+## Layer 3: Network Layer
+
+The Network Layer handles logical addressing and routing.
+
+It determines how data packets travel from the source network to the destination network.
+
+### Main Functions
+- IP addressing.
+- Routing.
+- Packet forwarding.
+
+### Example
+IP (Internet Protocol).
+
+**Real-life example:** Selecting the route through which a letter travels to reach its destination.
+
+## Layer 2: Data Link Layer
+
+The Data Link Layer handles communication between devices on the same local network.
+
+It uses MAC addresses and organizes data into frames.
+
+### Main Functions
+- MAC addressing.
+- Framing.
+- Error detection.
+- Local network delivery.
+
+**Real-life example:** Delivering a letter to the correct house within a particular neighborhood.
+
+## Layer 1: Physical Layer
+
+The Physical Layer is the lowest layer of the OSI model.
+
+It deals with the physical transmission of raw bits through communication media.
+
+### Examples
+- Ethernet cables.
+- Fiber-optic cables.
+- Radio signals.
+- Network connectors.
+
+**Real-life example:** The physical delivery of a letter from one location to another.
+
+---
+
+# 6. TCP/IP Model
+
+The TCP/IP model is a practical networking model used to describe communication over the internet.
+
+It consists of **4 layers**, unlike the OSI model, which has 7 layers.
+
+## Four Layers of the TCP/IP Model
+
+| Layer | Main Function | Examples |
+|---|---|---|
+| Application | Provides services to applications | HTTP, HTTPS, DNS, FTP, SSH |
+| Transport | End-to-end communication | TCP, UDP |
+| Internet | IP addressing and routing | IP, ICMP |
+| Link | Local network communication and physical transmission | Ethernet, Wi-Fi |
+
+## Layer 1: Application Layer
+
+This layer provides network services to end-user applications.
+
+It combines the functions of the Application, Presentation, and Session layers of the OSI model.
+
+### Examples
+- HTTP
+- HTTPS
+- FTP
+- DNS
+- SSH
+- SMTP
+
+**Real-life example:** Using applications such as a web browser or email client to communicate over a network.
+
+## Layer 2: Transport Layer
+
+The Transport Layer provides communication between applications running on different devices.
+
+Its two main protocols are TCP and UDP.
+
+### TCP (Transmission Control Protocol)
+
+- Connection-oriented.
+- Reliable data delivery.
+- Uses acknowledgements.
+- Retransmits lost data.
+
+### UDP (User Datagram Protocol)
+
+- Connectionless.
+- Faster with lower overhead.
+- Does not guarantee delivery.
+- Commonly used in real-time communication.
+
+**Real-life example:** Sending information in smaller pieces and delivering it to the correct application.
+
+## Layer 3: Internet Layer
+
+The Internet Layer handles logical addressing and routing of packets between networks.
+
+### Main Functions
+- IP addressing.
+- Packet routing.
+- Packet forwarding.
+
+### Examples
+- IPv4.
+- IPv6.
+- ICMP.
+
+**Real-life example:** Selecting the route through which data travels to reach another network.
+
+## Layer 4: Link Layer
+
+The Link Layer handles communication over the local network and the physical transmission of data.
+
+### Examples
+- Ethernet.
+- Wi-Fi.
+
+**Real-life example:** The physical or wireless connection that allows devices to communicate.
+
+---
+
+# 7. OSI vs TCP/IP Model
+
+| OSI Model | TCP/IP Model |
+|---|---|
+| Has 7 layers | Has 4 layers |
+| Reference model | Practical networking model |
+| Developed by ISO | Developed through the DARPA research program |
+| Application, Presentation, Session are separate | These functions are combined into Application |
+| Data Link and Physical are separate | These functions are combined into Link |
+
+### Layer Mapping
+
+| OSI Model | TCP/IP Model |
+|---|---|
+| Application (Layer 7) | Application |
+| Presentation (Layer 6) | Application |
+| Session (Layer 5) | Application |
+| Transport (Layer 4) | Transport |
+| Network (Layer 3) | Internet |
+| Data Link (Layer 2) | Link |
+| Physical (Layer 1) | Link |
+
+---
+
+# Conclusion
+
+Networking is an important concept for DevOps engineers because servers, containers, cloud services, and applications communicate through networks.
+
+Understanding routers, protocols, port numbers, the OSI model, and the TCP/IP model helps in troubleshooting real-world networking issues.
+
+### Important Commands for Practice
+
+```bash
+# Check IP address
+ip addr
+
+# Check routing table
+ip route
+
+# Check network connectivity
+ping google.com
+
+# Check DNS resolution
+nslookup google.com
+
+# Check listening ports
+sudo ss -tulnp
+
+# Test a specific port
+telnet server-ip 8080
+
+# Test HTTP connectivity
+curl http://server-ip:8080
+
+# Check network interfaces
+ip link
+```
+
+**Keep Practicing! Networking fundamentals are essential for Linux, DevOps, AWS, Docker, and Kubernetes.**

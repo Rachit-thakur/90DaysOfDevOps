@@ -389,12 +389,225 @@ The Link Layer handles communication over the local network and the physical tra
 
 ---
 
-# Conclusion
+# Task 3: AWS EC2 and Security Groups
 
-Networking is an important concept for DevOps engineers because servers, containers, cloud services, and applications communicate through networks.
+## 1. Launch an AWS EC2 Instance
 
-Understanding routers, protocols, port numbers, the OSI model, and the TCP/IP model helps in troubleshooting real-world networking issues.
+- Launch an AWS EC2 instance using the AWS Management Console.
+- A Free Tier-eligible instance can be used, depending on account eligibility and current AWS pricing.
 
+### EC2 Instance Screenshot
+
+![AWS EC2 Instance](images/Screenshot50.png)
+
+---
+
+## 2. Introduction to AWS Security Groups
+
+An AWS Security Group is a virtual firewall that controls incoming and outgoing network traffic for AWS resources, especially EC2 instances.
+
+It helps protect cloud instances by allowing only authorized network traffic based on configured rules.
+
+For example:
+
+- Allow SSH access to an EC2 instance from your IP address.
+- Allow HTTP traffic so users can access a website.
+- Allow HTTPS traffic for secure communication.
+- Restrict database access to application servers.
+
+Security Groups are an important part of AWS cloud security.
+
+## 3. Importance of Security Groups
+
+Security Groups provide several security benefits:
+
+1. **Network Protection:** Control which traffic can reach your EC2 instances.
+2. **Access Control:** Allow access only from trusted IP addresses or other security groups.
+3. **Application Security:** Expose only the ports required by an application.
+4. **Traffic Management:** Control inbound and outbound network communication.
+5. **Centralized Management:** Apply the same security group to multiple EC2 instances.
+6. **Automatic Updates:** Changes to security group rules are automatically applied to associated resources.
+
+## 4. Types of Security Group Rules
+
+Security Groups have two main types of rules.
+
+### A. Inbound Rules
+
+Inbound rules control incoming traffic to an EC2 instance.
+
+| Type | Protocol | Port | Source | Purpose |
+|---|---|---|---|---|
+| SSH | TCP | 22 | My IP | Remote Linux access |
+| HTTP | TCP | 80 | 0.0.0.0/0 | Website access |
+| HTTPS | TCP | 443 | 0.0.0.0/0 | Secure website access |
+| Custom TCP | TCP | 3306 | Application SG | MySQL database access |
+
+### B. Outbound Rules
+
+Outbound rules control outgoing traffic from an EC2 instance.
+
+| Type | Protocol | Port | Destination | Purpose |
+|---|---|---|---|---|
+| HTTP | TCP | 80 | 0.0.0.0/0 | Access HTTP websites |
+| HTTPS | TCP | 443 | 0.0.0.0/0 | Access secure websites |
+| Custom TCP | TCP | 3306 | Database server | Database communication |
+
+By default, a newly created security group allows all outbound traffic and has no inbound rules.
+
+## 5. Important Characteristics of Security Groups
+
+1. Security Groups are stateful.
+2. They support allow rules, not deny rules.
+3. All inbound traffic is denied by default when a security group is created.
+4. Outbound traffic is allowed by default through the initial outbound rule.
+5. Multiple security groups can be attached to an EC2 instance.
+6. Rules from multiple attached security groups are combined.
+7. Changes to rules are automatically applied to associated resources.
+8. Security Groups operate at the resource or network-interface level.
+
+### What Does Stateful Mean?
+
+Stateful means that if an EC2 instance receives an allowed request, its response traffic is automatically allowed.
+
+Similarly, if an EC2 instance sends a request, the response traffic is automatically allowed back in.
+
+You do not need to create separate rules for the response traffic.
+
+---
+
+# 6. Step-by-Step Guide to Create a Security Group
+
+We will create a Security Group for an AWS EC2 web server.
+
+### Step 1: Login to AWS Console
+
+1. Open the AWS Management Console.
+2. Sign in using your AWS account.
+3. Search for EC2 in the AWS services search bar.
+4. Open the EC2 Dashboard.
+
+### Step 2: Open Security Groups
+
+1. In the EC2 Dashboard, find the Network & Security section.
+2. Click on Security Groups.
+3. Click the **Create security group** button.
+
+### Step 3: Configure Basic Details
+
+Enter the following information:
+
+| Field | Value |
+|---|---|
+| Security Group Name | Web-Server-SG |
+| Description | Security group for web server |
+| VPC | Select your required VPC |
+
+A VPC is a logically isolated virtual network where you launch AWS resources.
+
+### Step 4: Configure Inbound Rules
+
+Add the following inbound rules:
+
+| Type | Protocol | Port Range | Source |
+|---|---|---|---|
+| SSH | TCP | 22 | My IP |
+| HTTP | TCP | 80 | Anywhere IPv4 |
+| HTTPS | TCP | 443 | Anywhere IPv4 |
+
+**Explanation:**
+
+- **SSH (22):** Allows administrators to connect to the Linux instance.
+- **HTTP (80):** Allows users to access the website.
+- **HTTPS (443):** Allows secure website communication.
+
+**Security Note:** Avoid allowing SSH access from `0.0.0.0/0` in production. Restrict it to your trusted IP address or network.
+
+### Step 5: Configure Outbound Rules
+
+You can keep the default outbound rule:
+
+| Type | Protocol | Port | Destination |
+|---|---|---|---|
+| All Traffic | All | All | 0.0.0.0/0 |
+
+This allows the EC2 instance to send traffic to any IPv4 destination.
+
+For better security, you can restrict outbound traffic to only the destinations and ports your application requires.
+
+### Step 6: Add Tags (Optional)
+
+You can add tags to identify and organize your Security Group.
+
+Example:
+
+| Key | Value |
+|---|---|
+| Environment | Production |
+| Project | Web-Application |
+
+### Step 7: Create Security Group
+
+1. Review the inbound and outbound rules.
+2. Click **Create security group**.
+3. Your Security Group will now be created.
+
+---
+
+## 7. Attach Security Group to an EC2 Instance
+
+After creating the Security Group:
+
+1. Open the EC2 Dashboard.
+2. Click Instances.
+3. Select the EC2 instance.
+4. Choose Actions.
+5. Select Security.
+6. Click Change security groups.
+7. Select Web-Server-SG.
+8. Click Add security group if required.
+9. Click Save.
+
+Your EC2 instance is now associated with the Security Group.
+
+## 8. Modify Security Group Rules
+
+You can modify rules whenever your application requirements change.
+
+Steps:
+
+1. Open EC2 Dashboard.
+2. Navigate to Security Groups.
+3. Select the Security Group.
+4. Open the Inbound rules or Outbound rules tab.
+5. Click Edit inbound rules or Edit outbound rules.
+6. Add, modify, or remove rules.
+7. Click Save rules.
+
+Changes are automatically applied to the associated resources.
+
+---
+
+## 9. Security Group Best Practices
+
+1. Follow the principle of least privilege.
+2. Allow only the ports required by your application.
+3. Restrict SSH access to trusted IP addresses.
+4. Never expose database ports directly to the public internet.
+5. Use Security Group references for communication between application tiers.
+6. Avoid opening unnecessary port ranges.
+7. Regularly review and remove unused rules.
+8. Use meaningful names and descriptions.
+9. Keep production and development environments separate.
+10. Use IAM permissions to control who can create and modify Security Groups.
+
+---
+
+## 10. Official AWS Documentation
+
+- [Create a Security Group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-security-group.html)
+- [Security Group Rules](https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html)
+- [EC2 Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html)
 ### Important Commands for Practice
 
 ```bash
@@ -422,5 +635,3 @@ curl http://server-ip:8080
 # Check network interfaces
 ip link
 ```
-
-**Keep Practicing! Networking fundamentals are essential for Linux, DevOps, AWS, Docker, and Kubernetes.**

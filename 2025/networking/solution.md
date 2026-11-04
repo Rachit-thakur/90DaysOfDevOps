@@ -608,6 +608,17 @@ Changes are automatically applied to the associated resources.
 - [Create a Security Group](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-security-group.html)
 - [Security Group Rules](https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html)
 - [EC2 Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html)
+
+# 4. **Hands-On with Networking Commands**
+- Practice essential networking commands like:
+  - `ping` (check connectivity)
+  ![AWS EC2 Instance](images/Screenshot51.png)
+  - `traceroute` / `tracert` (trace packet routes)
+  - `netstat` (network statistics)
+  - `curl` (make HTTP requests)
+  - `dig` / `nslookup` (DNS lookup)
+- **Task:** Create a cheat sheet or short guide explaining the purpose and usage of each command.
+
 ### Important Commands for Practice
 
 ```bash

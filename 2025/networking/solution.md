@@ -609,40 +609,276 @@ Changes are automatically applied to the associated resources.
 - [Security Group Rules](https://docs.aws.amazon.com/vpc/latest/userguide/security-group-rules.html)
 - [EC2 Security Groups](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-security-groups.html)
 
-# 4. **Hands-On with Networking Commands**
-- Practice essential networking commands like:
-  - `ping` (check connectivity)
-  ![AWS EC2 Instance](images/Screenshot51.png)
-  - `traceroute` / `tracert` (trace packet routes)
-  - `netstat` (network statistics)
-  - `curl` (make HTTP requests)
-  - `dig` / `nslookup` (DNS lookup)
-- **Task:** Create a cheat sheet or short guide explaining the purpose and usage of each command.
+---
 
-### Important Commands for Practice
+# Hands-On with Networking Commands
+
+## Introduction
+
+Networking commands are essential for DevOps engineers and Linux administrators. They help troubleshoot network connectivity, monitor active connections, test websites, and resolve DNS-related issues.
+
+This guide covers six commonly used networking commands:
+
+1. ping
+2. traceroute / tracert
+3. netstat
+4. curl
+5. dig
+6. nslookup
+
+---
+
+## 1. Ping – Check Network Connectivity
+
+### Purpose
+
+The `ping` command checks whether a destination server or device is reachable over a network.
+
+It uses ICMP (Internet Control Message Protocol) Echo Request and Echo Reply messages.
+
+### Syntax
 
 ```bash
-# Check IP address
-ip addr
-
-# Check routing table
-ip route
-
-# Check network connectivity
-ping google.com
-
-# Check DNS resolution
-nslookup google.com
-
-# Check listening ports
-sudo ss -tulnp
-
-# Test a specific port
-telnet server-ip 8080
-
-# Test HTTP connectivity
-curl http://server-ip:8080
-
-# Check network interfaces
-ip link
+ping <hostname-or-IP>
 ```
+
+### Examples
+
+```bash
+ping google.com
+```
+
+### Important Options
+
+| Option | Description |
+|---|---|
+| `-c 4` | Send only 4 packets |
+| `-i 2` | Send packets every 2 seconds |
+| `-W 5` | Wait up to 5 seconds for a response |
+
+### Screenshot
+
+![Ping Command](images/Screenshot51.png)
+
+---
+
+## 2. Traceroute / Tracert – Trace Network Routes
+
+### Purpose
+
+The `traceroute` command identifies the network path taken by packets from your computer to a destination server.
+
+Each intermediate router is called a **hop**.
+
+- Linux: `traceroute`
+- Windows: `tracert`
+
+### Syntax
+
+```bash
+traceroute <hostname-or-IP>
+```
+
+### Examples
+
+```bash
+traceroute google.com
+```
+
+### Important Options
+
+| Option | Description |
+|---|---|
+| `-n` | Display IP addresses without DNS lookup |
+| `-m 10` | Set maximum hops to 10 |
+| `-w 2` | Set timeout to 2 seconds |
+| `-4` | Use IPv4 |
+| `-6` | Use IPv6 |
+
+### Screenshot
+
+![Traceroute Command](images/Screenshot52.png)
+
+---
+
+## 3. Netstat – Network Statistics
+
+### Purpose
+
+The `netstat` command displays network connections, listening ports, routing tables, and network statistics.
+
+It is useful for identifying which services are listening on particular ports.
+
+### Syntax
+
+```bash
+netstat [options]
+```
+
+Display listening TCP/UDP ports with process information:
+
+```bash
+sudo netstat -tulnp
+```
+
+### Important Options
+
+| Option | Description |
+|---|---|
+| `-a` | Display all connections and listening sockets |
+| `-t` | Display TCP connections |
+| `-u` | Display UDP connections |
+| `-l` | Display listening ports |
+| `-n` | Display numeric IP addresses and port numbers |
+| `-p` | Display process ID and process name |
+| `-r` | Display routing table |
+
+### Practical Example
+
+```bash
+sudo netstat -tulnp
+```
+
+### Screenshot
+
+![Netstat Command](images/Screenshot53.png)
+
+---
+
+## 4. Curl – Make HTTP Requests
+
+### Purpose
+
+The `curl` command transfers data between a client and server using protocols such as HTTP, HTTPS, and FTP.
+
+It is commonly used to test websites, APIs, and application endpoints.
+
+### Syntax
+
+```bash
+curl <URL>
+```
+
+### Important Options
+
+| Option | Description |
+|---|---|
+| `-I` | Fetch response headers only |
+| `-L` | Follow redirects |
+| `-v` | Display detailed connection information |
+| `-o` | Save response to a file |
+| `-X` | Specify HTTP method |
+| `-H` | Add HTTP headers |
+| `-d` | Send request data |
+
+### Screenshot
+
+![Curl Command](images/Screenshot54.png)
+
+---
+
+## 5. Dig – DNS Lookup
+
+### Purpose
+
+`dig` stands for Domain Information Groper.
+
+It is used to query DNS servers and retrieve detailed DNS information about domain names.
+
+It helps troubleshoot DNS resolution problems.
+
+### Syntax
+
+```bash
+dig <domain-name>
+```
+
+### Examples
+
+Find DNS information:
+
+```bash
+dig google.com
+```
+
+Display only the IP address:
+
+```bash
+dig google.com +short
+```
+
+Query using Google's public DNS:
+
+```bash
+dig @8.8.8.8 google.com
+```
+
+### Important DNS Records
+
+| Record | Purpose |
+|---|---|
+| A | Maps domain to IPv4 address |
+| AAAA | Maps domain to IPv6 address |
+| MX | Identifies mail servers |
+| CNAME | Creates a domain alias |
+| NS | Identifies authoritative name servers |
+| TXT | Stores text information |
+| PTR | Performs reverse DNS lookup |
+
+### Screenshot
+
+![Dig Command](images/Screenshot56.png)
+
+---
+
+## 6. Nslookup – Name Server Lookup
+
+### Purpose
+
+`nslookup` stands for Name Server Lookup.
+
+It is used to query DNS servers and find the IP address associated with a domain name.
+
+It provides a simple way to troubleshoot DNS resolution.
+
+### Syntax
+
+```bash
+nslookup <domain-name>
+```
+
+### Examples
+
+Find Google's IP address:
+
+```bash
+nslookup google.com
+```
+
+### Practical Example
+
+```bash
+nslookup google.com
+```
+
+Example output:
+
+### Screenshot
+
+![Nslookup Command](images/Screenshot55.png)
+
+---
+
+## 9. Real-World DevOps Use Cases
+
+| Scenario | Command |
+|---|---|
+| Check whether a server is reachable | `ping server-ip` |
+| Identify network routing problems | `traceroute domain.com` |
+| Find which process is using port 8080 | `sudo netstat -tulnp \| grep :8080` |
+| Check whether a website is responding | `curl -I https://domain.com` |
+| Troubleshoot DNS resolution | `dig domain.com` |
+| Find the IP address of a domain | `nslookup domain.com` |
+
+---
+

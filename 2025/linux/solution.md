@@ -339,3 +339,154 @@ Kill the process and verify it's gone.
 
 verify:
 ```ps aux | grep ping```
+
+---
+
+# Task 6: Automate Backups with Shell Scripting
+
+## Objective
+
+Automate directory backups using a Bash script and schedule them using Cron.
+
+### Requirements
+- Create a shell script to back up the `devops-workspace` directory.
+- Create a compressed `.tar.gz` archive.
+- Save backups inside the `backups` directory.
+- Include the current date and time in the backup filename.
+- Schedule automatic backups using Cron.
+- Display a success message in green text.
+
+---
+
+## 1. Create a Backup Script
+
+Create a file named `backup.sh`.
+
+```bash
+#!/bin/bash
+
+# Create backup directory
+mkdir -p ~/backups
+
+# Create compressed backup
+tar -czf ~/backups/backup_$(date +%F_%H-%M-%S).tar.gz -C ~ devops-workspace
+
+# Display success message in green
+echo -e "\e[32mBackup completed successfully!\e[0m"
+```
+
+## 2. Execute the Script
+
+Give executable permission:
+
+```bash
+chmod +x backup.sh
+```
+
+Run the script manually:
+
+```bash
+./backup.sh
+```
+
+Expected output:
+
+```text
+Backup completed successfully!
+```
+
+## 3. Schedule Backup Using Cron
+
+Open the crontab editor:
+
+```bash
+crontab -e
+```
+
+Add the following Cron job:
+
+```bash
+* * * * * /bin/bash /home/rachit-thakur/backup.sh
+```
+
+This schedules the backup script to run automatically every minute.
+
+### Cron Schedule Explanation
+
+| Field | Value | Description |
+|---|---|---|
+| Minute | `*` | Every minute |
+| Hour | `*` | Every hour |
+| Day | `*` | Every day |
+| Month | `*` | Every month |
+| Weekday | `*` | Every day of the week |
+
+## 4. Verify the Cron Job
+
+Check scheduled Cron jobs:
+
+```bash
+crontab -l
+```
+
+## 5. Verify Backup Files
+
+List the backup directory:
+
+```bash
+ls -lh ~/backups/
+```
+
+Example output:
+
+```text
+backup_2026-11-06_14-50-00.tar.gz
+backup_2026-11-06_14-51-00.tar.gz
+backup_2026-11-06_14-52-00.tar.gz
+```
+
+## 6. Check Archive Contents
+
+Use the following command to view files inside the compressed archive:
+
+```bash
+tar -tzf ~/backups/backup_2026-11-06_14-50-00.tar.gz
+```
+
+---
+
+## Screenshots
+
+### Cron Job Configuration
+
+![Cron Job](images/Screenshot57.png)
+
+### Backup Files Created
+
+![Backup Files](images/Screenshot58.png)
+
+### Successful Backup Message in Green
+
+![Backup Success Message](images/Screenshot59.png)
+
+---
+
+## Commands Used
+
+| Command | Purpose |
+|---|---|
+| `mkdir -p` | Create backup directory |
+| `tar -czf` | Create compressed archive |
+| `date +%F` | Get current date |
+| `date +%H-%M-%S` | Get current time |
+| `chmod +x` | Make script executable |
+| `crontab -e` | Edit Cron jobs |
+| `crontab -l` | List Cron jobs |
+| `echo -e` | Display formatted text |
+| `ls -lh` | List files with sizes |
+
+## Conclusion
+
+Successfully automated directory backups using a Bash shell script and Cron.
+
+---

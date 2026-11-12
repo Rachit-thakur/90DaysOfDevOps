@@ -317,29 +317,132 @@ Use `sed` to replace all IP addresses with **[REDACTED]** for security.
 ![linux](images/Screenshot17.png)
 
 
-# **5️⃣ Process Management & Monitoring**
+# Task 5️⃣ Process Management & Monitoring in Linux
 
-Start a background process (`ping google.com > ping_test.log &`).
-![linux](images/Screenshot8.png)
+## Objective
+Learn how to start, monitor, and terminate background processes in Linux using `ps`, `top`, and `htop` commands.
 
-Use `ps`, `top`, and `htop` to monitor it.
-- ps:
-ps aux | grep ping\
-![linux](images/Screenshot9.png)
+## 1. Start a Background Process
 
-- top:\
-![linux](images/Screenshot10.png)
+Run the following command to start a ping process in the background and save its output to a log file.
 
-- htop\
-![linux](images/Screenshot11.png)
+```bash
+ping google.com > ping_test.log &
+```
 
-Kill the process and verify it's gone.
-```kill PID```\
-![linux](images/Screenshot12.png)
+**Explanation:**
+- `ping google.com` – Checks network connectivity with Google.
+- `>` – Redirects output to a file.
+- `ping_test.log` – Stores ping output.
+- `&` – Runs the process in the background.
 
-verify:
-```ps aux | grep ping```
+![Linux](images/Screenshot8.png)
 
+## 2. Monitor Processes Using ps
+
+Use the following command to find the running ping process.
+
+```bash
+ps aux | grep ping
+```
+
+**Explanation:**
+- `ps` – Displays information about running processes.
+- `a` – Shows processes associated with terminals.
+- `u` – Displays processes in user-oriented format.
+- `x` – Shows processes without a controlling terminal.
+- `grep ping` – Filters output to show ping-related processes.
+
+![Linux](images/Screenshot9.png)
+
+## 3. Monitor Processes Using top
+
+Run:
+
+```bash
+top
+```
+
+**Explanation:**
+
+The `top` command provides real-time information about system processes.
+
+It displays:
+- CPU utilization.
+- Memory utilization.
+- Running processes.
+- Process IDs (PID).
+- System load average.
+
+![Linux](images/Screenshot10.png)
+
+## 4. Monitor Processes Using htop
+
+Run:
+
+```bash
+htop
+```
+
+**Explanation:**
+
+`htop` is an interactive process monitoring tool that provides a user-friendly interface.
+
+Features:
+- Real-time CPU and memory usage.
+- Interactive process management.
+- Easy process searching.
+- Ability to kill processes directly.
+
+If htop is not installed, install it using:
+
+```bash
+sudo yum install htop -y
+```
+
+![Linux](images/Screenshot11.png)
+
+## 5. Kill the Background Process
+
+First, identify the PID of the ping process.
+
+```bash
+ps aux | grep '[p]ing google.com'
+```
+
+Kill the process using its PID:
+
+```bash
+kill PID
+```
+
+Replace `PID` with the actual process ID.
+
+![Linux](images/Screenshot12.png)
+
+## 6. Verify Process Termination
+
+Run the following command:
+
+```bash
+ps aux | grep '[p]ing google.com'
+```
+
+If no output appears, the ping process is no longer running.
+
+## Conclusion
+
+In this task, I learned how to:
+
+1. Start a background process using `&`.
+2. Redirect process output into a log file.
+3. Monitor processes using `ps`.
+4. Monitor CPU and memory usage using `top`.
+5. Monitor processes interactively using `htop`.
+6. Terminate processes using the `kill` command.
+7. Verify whether a process has been terminated successfully.
+
+**Result:** Successfully performed Linux process management and monitoring using essential Linux commands.
 ---
 
 # Task 6: Automate Backups with Shell Scripting
